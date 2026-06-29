@@ -1,0 +1,2 @@
+experiment,config_yaml,seed_name,seed_value,purpose
+baseline,experiment_01_baseline.yaml,random_state,42,Master seed for primary single-model detector (logreg, hgbt, catboost, lightgbm) and second-stage gate (logreg, catboost, untuned HGBT, tuned HGBT); also seeds threshold selection over primary_threshold_grid and gate hyperparameter search over gate_margin_grid x gate_learning_rate_grid x gate_tree_shape_tuples

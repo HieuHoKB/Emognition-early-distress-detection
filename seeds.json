@@ -1,0 +1,24 @@
+{
+  "metadata": {
+    "project": "Toward Reliable Early Warning of Psychological Distress",
+    "description": "Master inventory of the single random seed that controls stochasticity in the thesis's primary experiment branch. Reviewers can re-run the primary experiment by combining experiment_01_baseline.yaml with this seed value.",
+    "generated_on": "2026-06-29",
+    "config_yaml_naming_convention": "experiment_NN_<branch>.yaml"
+  },
+  "global_seeds": {
+    "note": "PYTHONHASHSEED is not pinned. For bit-for-bit reproducibility across OS / Python builds, set PYTHONHASHSEED=0 (or any fixed value) in the shell before launching the experiment."
+  },
+  "experiments": {
+    "baseline": {
+      "config_yaml": "experiment_01_baseline.yaml",
+      "model_family": "Tabular — HGBT primary, with optional LogReg / CatBoost / LightGBM backends",
+      "split_protocol": "Leave-One-Subject-Out (LOSO) with single-distress-vs-non-distress objective. Primary operating point is the backend-prefix grid at prefix ratios 0.1, 0.2, 0.3.",
+      "seeds": {
+        "random_state": {
+          "value": 42,
+          "purpose": "Master seed for the primary single-model detector (sklearn HGBT, CatBoost, LightGBM, LogReg) and the second-stage gate (LogReg, CatBoost, untuned HGBT, tuned HGBT). The same value also seeds the threshold selection over primary_threshold_grid and the gate hyperparameter search over gate_margin_grid x gate_learning_rate_grid x gate_tree_shape_tuples."
+        }
+      }
+    }
+  }
+}

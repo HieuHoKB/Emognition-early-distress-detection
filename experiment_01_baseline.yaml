@@ -1,0 +1,64 @@
+# Experiment 01: Baseline (tabular LOSO)
+dataset_note: >-
+  Samsung Watch only, STIMULUS only, labels from questionnaire self-report,
+  LOSO by participant, participant 30 has questionnaire-only and should remain
+  excluded.
+architecture_note: >-
+  Start from fresh LogisticRegression baseline over prefix-level statistical
+  features. Preserve label/feature/eval harness stability; only search
+  train-time choices such as feature variant, feature subset, regularization,
+  and class weighting.
+
+model_type: logreg
+feature_variant: raw
+feature_set: all
+class_weight: balanced
+calibration_method: sigmoid
+calibration_fraction: 0.25
+min_calibration_participants: 6
+
+c: 1.0
+
+hgbt_learning_rate: 0.05
+hgbt_max_leaf_nodes: 15
+hgbt_min_samples_leaf: 20
+hgbt_l2_regularization: 0.0
+corr_threshold: 0.95
+
+# Supported model backends
+supported_backends: [logreg, hgbt, catboost, lightgbm]
+primary_backend: logreg
+catboost_depth: 6
+lightgbm_n_estimators: 200
+backend_hyperparameter_sharing: >-
+  CatBoost reuses hgbt_learning_rate and adds catboost_depth.
+  LightGBM reuses hgbt_learning_rate, hgbt_max_leaf_nodes,
+  hgbt_min_samples_leaf, hgbt_l2_regularization and adds
+  lightgbm_n_estimators. All four backends share the same
+  random_state and class_weight.
+
+alert_policy: single_threshold
+high_confidence_margin: 0.1
+early_prefix_cutoff: 0.4
+early_margin: 0.05
+late_margin: 0.03
+two_stage_risk_margin: 0.05
+two_stage_confirm_margin: 0.45
+early_warning_max_false_positive_rate: 0.45
+early_warning_max_surprise_far: 0.75
+
+# Threshold and gate search spaces (Table 7 of thesis, Chapter 4.3)
+primary_threshold_grid: [0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65]
+threshold_selection_rule: >-
+  Choose thresholds within 0.04 of the maximum training balanced accuracy,
+  then prioritize higher distress recall, higher balanced accuracy, lower
+  false-positive rate, higher macro-F1, and finally the lower threshold within
+  the tied candidate set.
+gate_margin_grid: [0.05, 0.10, 0.15]
+gate_learning_rate_grid: [0.02, 0.05]
+gate_tree_shape_tuples: [[7, 40, 1.0], [15, 20, 0.0], [31, 10, 0.0]]
+gate_tree_shape_dimensions: [leaves, min_samples, l2]
+gate_families_benchmarked: [logreg, catboost, untuned_hgbt, tuned_hgbt]
+
+prefix_ratios: [0.1, 0.2, 0.3]
+summary_prefix_ratio: 0.3

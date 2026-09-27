@@ -1,10 +1,28 @@
-# Early-Warning Distress Detection — Reproducible Code
+# Early-Warning Distress Detection — Research Code
 
 This repository contains the implementation of the early-warning distress
 detection pipeline described in the thesis *"Toward Reliable Early Warning
 of Psychological Distress"*. The code trains a participant-independent
 tabular detector on Samsung Watch features and optionally adds a
 second-stage distress-versus-surprise gate.
+
+| Component             | Evaluation setting                              | Key result                                        | Caveat                                                                        |
+| --------------------- | ----------------------------------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Primary HGBT detector | 42 admissible LOSO folds; 30% session prefix    | Macro-F1 0.736; distress recall 0.850             | Surprise false-alarm rate 1.000                                               |
+| Two-stage HGBT gate   | Core non-distress + surprise challenge sessions | Confirmed recall 0.707; surprise misrouting 0.238 | Same surprise folds informed selection and reporting; not external validation |
+
+These are exploratory model-selection summaries on one laboratory archive. They are not clinical-performance estimates or evidence of deployment readiness.
+
+## Reproducibility status
+
+This repository provides the public implementation, experiment
+configuration, seeds, and synthetic smoke test for the study.
+
+The original sensor data and derived feature table are not redistributed.
+They are subject to the source dataset's access and data-handling terms.
+Qualified academic reviewers may contact the author to request
+verification materials where permitted.
+
 
 ## What is in this repository
 
@@ -114,9 +132,7 @@ configuration and its routing metrics.
 
 ## What is NOT in this repository
 
-* **Raw Samsung Watch sensor data** are not redistributed. The
-  participant consent and the institutional data-handling policy do not
-  allow public release of physiological signals.
+* **Raw Samsung Watch sensor data** are not redistributed in this repository. Users should obtain the source dataset directly from its original provider and comply with its access terms, licence, and applicable data-handling requirements.
 * **Resampling scripts** are data-source specific and live in the
   author's private working repository.
 * **Author-trained checkpoints** are not redistributed.
@@ -127,6 +143,13 @@ against the public configuration and seeds.
 
 ## License
 
-Released for the purpose of thesis verification and academic
-reproducibility. Please contact the author before redistributing the
-contents in derivative work.
+MIT License
+
+## Citation
+
+If you use this code, please cite:
+
+Ho, T. H. (2026). Feasibility of Early Distress Warning From
+Partial Wearable Observations in the Emognition Dataset.
+Presented at the 11th International Conference on the Development
+of Biomedical Engineering (BME11). Unpublished manuscript / conference presentation.
